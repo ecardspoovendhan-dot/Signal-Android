@@ -25,7 +25,7 @@ jobs:
         run: |
           chmod +x gradlew
           set -o pipefail
-          ./gradlew :app:assemblePlayProdDebug 2>&1 | tee build.log
+          ./gradlew :Signal-Android:assemblePlayProdDebug 2>&1 | tee build.log
       - name: Show build error on the run page
         if: failure()
         run: |
