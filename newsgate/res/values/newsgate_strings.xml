@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- News Gate: how the app is named outside itself.
+     newsgate_launcher_label: home screen and app drawer.
+     newsgate_app_label: Settings > Apps, Battery, Digital Wellbeing,
+     notifications and Accounts. -->
+<resources>
+    <string name="newsgate_launcher_label" translatable="false">News</string>
+    <string name="newsgate_app_label" translatable="false">Browser</string>
+    <color name="newsgate_news_bg">#1F3A5F</color>
+    <color name="newsgate_browser_bg">#0F6E66</color>
+</resources>

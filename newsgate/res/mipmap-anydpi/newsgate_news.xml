@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 6-7 (no adaptive icons): coloured circle with the same artwork. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/newsgate_news_bg" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/newsgate_news_fg" />
+</layer-list>

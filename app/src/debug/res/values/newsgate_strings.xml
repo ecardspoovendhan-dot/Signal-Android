@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Test builds only: lets the test copy sit next to the real Signal with a different name. -->
-<resources>
-    <string name="app_name" translatable="false">Signal Test</string>
-</resources>
