@@ -37,6 +37,20 @@ jobs:
           chmod +x gradlew
           set -o pipefail
           ./gradlew :Signal-Android:assemblePlayProdDebug 2>&1 | tee build.log
+      - name: Report the app's names and icons
+        run: |
+          APK=$(ls app/build/outputs/apk/*/debug/*arm64-v8a*.apk app/build/outputs/apk/*/*/debug/*arm64-v8a*.apk 2>/dev/null | head -1)
+          AAPT2=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2
+          echo "APK: $APK ($(du -h "$APK" | cut -f1))"
+          REPORT=$( {
+            "$AAPT2" dump badging "$APK" | grep -E "^(package|application-label|application-icon|launchable-activity):"
+            echo "--- launcher entry in manifest ---"
+            "$AAPT2" dump xmltree --file AndroidManifest.xml "$APK" | grep -A6 'RoutingActivity"' | head -8
+            echo "--- icon resources ---"
+            "$AAPT2" dump resources "$APK" | grep -A2 -E "mipmap/(newsgate_news|newsgate_browser|ic_launcher)\b" | head -24
+          } 2>&1 )
+          echo "$REPORT"
+          { echo '## App names and icons'; echo '```'; echo "$REPORT"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - name: Show build error on the run page
         if: failure()
         run: |
