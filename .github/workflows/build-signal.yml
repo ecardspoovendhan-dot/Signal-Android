@@ -1,0 +1,33 @@
+name: Build Signal
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Fit the build into the runner's memory
+        run: |
+          sed -i 's/-Xmx12g/-Xmx5g/' gradle.properties
+          sed -i 's/kotlin.daemon.jvmargs=-Xmx4g/kotlin.daemon.jvmargs=-Xmx2g/' gradle.properties
+      - name: Install SDK platform 37, build-tools 36, NDK 28
+        run: |
+          SDK="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDK" --licenses >/dev/null 2>&1 || true
+          "$SDK" "platforms;android-37" "build-tools;36.0.0" "ndk;28.0.13004108"
+          yes | "$SDK" --licenses >/dev/null 2>&1 || true
+      - name: Build debug APK
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assemblePlayProdDebug --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signal-debug-apk
+          path: app/build/outputs/apk/**/debug/*.apk
+          if-no-files-found: error
